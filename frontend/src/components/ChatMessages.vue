@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full overflow-y-auto p-4 sm:p-6 sm:px-20 space-y-4 bg-gray-50">
+  <div ref="messagesContainer" class="h-full overflow-y-auto p-4 sm:p-6 sm:px-20 space-y-4 bg-gray-50">
     <!-- Пустое состояние -->
     <div v-if="chatStore.currentMessages.length === 0 && !chatStore.isLoading" 
          class="flex items-center justify-center h-full">
@@ -46,9 +46,34 @@
 </template>
 
 <script setup lang="ts">
+import { ref, watch, nextTick } from 'vue'
 import { useChatStore } from '@/stores/chatStore'
 
 const chatStore = useChatStore()
+const messagesContainer = ref<HTMLElement>()
+
+const scrollToBottom = async () => {
+  await nextTick()
+  if (messagesContainer.value) {
+    messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
+  }
+}
+
+watch(
+  () => chatStore.currentMessages.length,
+  () => {
+    scrollToBottom()
+  }
+)
+
+watch(
+  () => chatStore.isLoading,
+  (isLoading) => {
+    if (isLoading) {
+      scrollToBottom()
+    }
+  }
+)
 
 const formatTime = (date: Date) => {
   return new Intl.DateTimeFormat('ru-RU', {

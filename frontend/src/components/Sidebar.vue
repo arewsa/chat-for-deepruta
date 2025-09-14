@@ -34,7 +34,7 @@
           :key="chat.id"
           class="p-3 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors group relative"
           :class="{ 'bg-blue-50 border border-blue-200': chatStore.activeChatId === chat.id }"
-          @click="chatStore.selectChat(chat.id)"
+          @click="chatStore.selectChat(chat.id); $emit('close-sidebar')"
         >
           <div class="text-gray-800 text-sm truncate font-medium pr-8">
             {{ chat.title }}
