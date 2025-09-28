@@ -5,12 +5,15 @@ description = ""
 authors = [
     {name = "arewsa",email = "arewsa5@gmail.com"}
 ]
-readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "mistralai>=1.8.1,<2.0.0",
     "python-dotenv>=1.0.1,<2.0.0",
-    "fastapi[standard] (>=0.116.1,<0.117.0)"
+    "fastapi[standard] (>=0.116.1,<0.117.0)",
+    "griffe>=1.14.0",
+    "pydantic-extra-types>=2.10.5",
+    "geojson-pydantic>=2.0.0",
+    "google-genai>=1.39.1",
+    "mcp>=1.15.0",
 ]
 
 

@@ -1,7 +1,10 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from services.mistral_services import MistralServices
+from models.chat_request import ChatRequest
+from models.chat_response import ChatResponse
 
+mistral_services = MistralServices()
 app = FastAPI(title="ChatForDeepRuta API")
 
 app.add_middleware(
@@ -12,21 +15,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class ChatRequest(BaseModel):
-    message: str
-    chatId: str
-
-class ChatResponse(BaseModel):
-    response: str
-
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
     try:
-        # Простой эхо-ответ для тестирования
-        # В реальном проекте здесь будет интеграция с LLM
-        response_text = f"Вы написали: '{request.message}'. Это тестовый ответ от AI!"
-        
-        return ChatResponse(response=response_text)
+        response_text = mistral_services.generate_response(request.message)
+
+        return ChatResponse(response=str(response_text))
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
