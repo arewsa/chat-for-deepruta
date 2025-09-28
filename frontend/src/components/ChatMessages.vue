@@ -12,7 +12,7 @@
 
     <!-- Сообщения -->
     <div 
-      v-for="message in chatStore.currentMessages" 
+      v-for="message in chatStore.currentMessages"
       :key="message.id"
       class="flex gap-3 sm:gap-4"
       :class="message.role === 'user' ? 'justify-end' : 'justify-start'"
@@ -23,9 +23,17 @@
           ? 'bg-blue-500 text-white' 
           : 'bg-white text-gray-800 border border-gray-200'"
       >
-        <div class="whitespace-pre-wrap text-sm sm:text-base leading-relaxed">
+        <!-- Форматированный текст для AI -->
+        <MarkdownText 
+          v-if="message.role === 'assistant'" 
+          :text="message.content" 
+        />
+        
+        <!-- Обычный текст для пользователя -->
+        <div v-else class="whitespace-pre-wrap text-sm sm:text-base leading-relaxed">
           {{ message.content }}
         </div>
+        
         <div class="text-xs mt-2 flex justify-end"
              :class="message.role === 'user' ? 'text-blue-100' : 'text-gray-500'">
           {{ formatTime(message.timestamp) }}
@@ -48,6 +56,7 @@
 <script setup lang="ts">
 import { ref, watch, nextTick } from 'vue'
 import { useChatStore } from '@/stores/chatStore'
+import MarkdownText from './MarkdownText.vue'
 
 const chatStore = useChatStore()
 const messagesContainer = ref<HTMLElement>()

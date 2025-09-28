@@ -22,24 +22,9 @@
     <main class="flex-1 overflow-hidden">
       <Chat />
     </main>
-
-    <!-- Уведомления -->
-    <Toast />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import Chat from './components/Chat.vue'
-import { useToast } from 'primevue/usetoast'
-import Toast from 'primevue/toast'
-
-// Toast для уведомлений
-const toast = useToast()
-
-// Жизненный цикл
-onMounted(() => {
-  // Инициализация приложения
-})
 </script>
-
